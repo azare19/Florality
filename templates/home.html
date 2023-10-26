@@ -1,0 +1,298 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div>
+        <h3>Let's make something beautiful!</h3>
+        <h4>Florality: The Generative AI Bouquet Designer</h4>
+        <div id="bouq_form">
+            <div style="display: flex;">
+                <!-- First Column -->
+                <div class="color-options" id="color-options" style="flex: 1; padding: 10px;">
+                    <h4>Pick some colors!</h4>
+                    <div class="color-group">
+                        <label>
+                            <input type="checkbox" name="color_options" value="reds">
+                            Reds
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="oranges">
+                            Oranges
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="yellows">
+                            Yellows
+                        </label>
+                    </div>
+                    <div class="color-group">
+                        <label>
+                            <input type="checkbox" name="color_options" value="greens">
+                            Greens
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="blues">
+                            Blues
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="purples">
+                            Purples
+                        </label>
+                    </div>
+                    <div class="color-group">
+                        <label>
+                            <input type="checkbox" name="color_options" value="whites">
+                            Whites
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="neutrals">
+                            Neutrals
+                        </label>
+                        <label>
+                            <input type="checkbox" name="color_options" value="pinks">
+                            Pinks
+                        </label>
+                    </div>
+                </div>
+    
+                <!-- Second Column -->
+                <div id = 'shape-options' class = 'shape-options'>
+                    <h4>Choose a shape!</h4>
+                    <div class = 'shape-options-content'>
+                        <div style="flex: 1; padding: 10px;">
+                            <label>
+                                <input type="radio" name="shape" value="round"> 
+                                <img src="/static/round.png" alt="round bouquet" style="width:100px;height:100px">
+                                <figcaption>Round</figcaption>
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="shape" value="pageant">
+                                <img src="/static/pageant.png" alt="pageant bouquet" style="width:100px;height:100px">
+                                <figcaption>Pageant</figcaption>
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="shape" value="cascade">
+                                <img src="/static/cascade.png" alt="cascade bouquet" style="width:100px;height:100px">
+                                <figcaption>Cascade</figcaption>
+                            </label>
+                        </div>
+        
+                        <div style="flex: 1; padding: 10px;">
+                            <label>
+                                <input type="radio" name="shape" value="nosegay">
+                                <img src="/static/nosegay.png" alt="nosegay bouquet" style="width:100px;height:100px">
+                                <figcaption>Nosegay</figcaption>
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="shape" value="pomander">
+                                <img src="/static/pomander.png" alt="pomander bouquet" style="width:100px;height:100px">
+                                <figcaption>Pomander</figcaption>
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="shape" value="posy">
+                                <img src="/static/posy.png" alt="posy bouquet" style="width:100px;height:100px">
+                                <figcaption>Posy</figcaption>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Third Column -->
+                <div id = 'vibe-options' style="flex: 1; padding: 10px;">
+                    <h4>What's your bouquet's vibe?</h4>
+                    <label>
+                        <input type="radio" name="vibe" value="traditional"> Traditional
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="vibe" value="bohemian"> Bohemian
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="vibe" value="vintage"> Vintage
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="vibe" value="garden"> Garden
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="vibe" value="rustic"> Rustic
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="vibe" value="beach"> Beach
+                    </label>
+                </div>
+            </div>
+    
+            <!-- Input Text Box -->
+            <div class="extras" style="padding: 10px;">
+                <label for="extras">Anything else your bouquet needs? ex. specific flowers, other themes</label>
+                <input type="text" id="extras" name="extras">
+            </div>
+    
+            <!-- Submit Button -->
+            <div style="padding: 10px;">
+                <input type="submit" value="Build my Bouquet!" id = 'submit_btn'>
+            </div>
+        </div>
+
+        <div id="results" style="display: none;">
+        </div>
+
+        <div id="gallery" style="display: none;">
+        </div>
+        
+        <script>
+
+            var form_data = {{data|tojson}} 
+
+            $(function() {
+                $("#submit_btn").click(function(){
+                    let checkboxes = document.querySelectorAll('input[name="color_options"]:checked');
+                    let colors = [];
+                    checkboxes.forEach((checkbox) => {
+                        colors.push(checkbox.value);
+                    });
+
+                    let shape = document.querySelector('input[name="shape"]:checked').value;
+                    let vibe = document.querySelector('input[name="vibe"]:checked').value;
+
+                    let extras = document.getElementById('extras').value
+
+                    submit_form(colors, shape, vibe, extras)
+                })
+            });
+
+            function submit_form(colors, shape, vibe, extras){
+                let data = {"colors":colors,"shape":shape, 'vibe':vibe, "extras":extras}
+                $.ajax({
+                    type: "POST",
+                    url: "/submit_form",                
+                    dataType : "json",
+                    contentType: "application/json; charset=utf-8",
+                    
+                    data : JSON.stringify(data),
+                    beforeSend: function () { 
+                        $("#spinner-div").show()
+                    },
+                    success: function(data, text){
+                        // console.log("submit_headline response")          
+                        form_data = data
+                        show_results(data)
+                    },
+                    error: function(request, status, error){
+                        console.log("Error");
+                        console.log(request)
+                        console.log(status)
+                        console.log(error)
+                    },
+                    complete: function () { 
+                        $("#spinner-div").hide()
+                    },
+                }); 
+            }
+
+            function show_results(data){
+                $("#results").show();
+                $("#gallery").hide()
+                $("#gallery").empty();
+    
+                // Clear any previous content in the results div
+                $("#results").empty();
+    
+                 // Check if there are flowers in the data
+                if (data && data.flowers && data.flowers.length > 0) {
+                    // Create a container for the flower checkboxes
+                    var flowerContainer = $("<div class='flower-options'></div>");
+                    console.log(data.flower_images)
+                    // Loop through the flowers and create checkboxes
+                    data.flowers.forEach(function (flower) {
+                        var flowerDiv = $("<div class='flower-option'></div>");
+                        var checkbox = $("<input type='checkbox' name='selected_flowers' value='" + flower + "'> " + flower);
+                        console.log(flower)
+                        console.log(data.flower_images[flower])
+                        var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
+                        var caption = $("<figcaption>" + flower + "</figcaption>");
+                        // Append the image and checkbox to the container
+                        flowerDiv.append(flowerImage);
+                        flowerDiv.append(checkbox);
+                        flowerDiv.append(caption);
+            
+                        // Append the container to the flower options
+                        flowerContainer.append(flowerDiv);
+                        
+                    });
+                    
+                    // Append the flower container and a 'Visualize bouquet' button to the results div
+                    $("#results").append(flowerContainer);
+                    $("#results").append("<input type='submit' value='Visualize bouquet' id='img_btn'>");
+                }
+                
+                // Add an event listener for the 'Visualize bouquet' button
+                $("#img_btn").click(function () {
+                    // Implement the logic to visualize the bouquet when the button is clicked
+                    // You can call the function or make another AJAX request here
+                    let checkboxes = document.querySelectorAll('input[name="selected_flowers"]:checked');
+                    let selected_flowers = [];
+                    checkboxes.forEach((checkbox) => {
+                        selected_flowers.push(checkbox.value);
+                    });
+
+                    req_img(selected_flowers, form_data)
+                });
+            }
+
+
+            function req_img(selected_flowers, form_data){
+                let data = {"selected_flowers":selected_flowers,"form_data":form_data}
+                $.ajax({
+                    type: "POST",
+                    url: "/req_img",                
+                    dataType : "json",
+                    contentType: "application/json; charset=utf-8",
+                    
+                    data : JSON.stringify(data),
+                    beforeSend: function () { 
+                        $("#spinner-div").show()
+                    },
+                    success: function(data, text){
+                        //console.log("submit_headline response")
+                        //console.log(data)                
+                        new_form_data = data
+                        show_generations(data["generations"])
+                    },
+                    error: function(request, status, error){
+                        console.log("Error");
+                        console.log(request)
+                        console.log(status)
+                        console.log(error)
+                    },
+                    complete: function () { 
+                        $("#spinner-div").hide()
+                    },
+                }); 
+            }
+
+
+            function show_generations(generations_list){ 
+                $("#gallery").show()            
+                $("#gallery").empty()
+
+                console.log(generations_list)
+
+                $.each(generations_list, function(i,item){
+                    // console.log(item)
+                    let new_gen_div = $("<div id='gen_img'></div>"+"<img src='"+item+"''></img></div>")
+                    
+                    $("#gallery").append(new_gen_div)
+                })
+            }
+        </script>
+        
+{% endblock %}
+
