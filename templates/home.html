@@ -142,6 +142,7 @@
         </div>
 
         <div id="results" style="display: none;">
+            <input type='submit' value='Visualize bouquet' id='img_btn'>
         </div>
 
         <div id="gallery" style="display: none;">
@@ -203,7 +204,7 @@
                 $("#gallery").empty();
     
                 // Clear any previous content in the results div
-                $("#results").empty();
+                //$("#results").empty();
     
                  // Check if there are flowers in the data
                 if (data && data.flowers && data.flowers.length > 0) {
@@ -218,10 +219,12 @@
                         console.log(data.flower_images[flower])
                         var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
                         var caption = $("<figcaption>" + flower + "</figcaption>");
+                        var flower_colors = $("<text>" + data.flower_colors[0] + "</text>");
                         // Append the image and checkbox to the container
                         flowerDiv.append(flowerImage);
                         flowerDiv.append(checkbox);
                         flowerDiv.append(caption);
+                        flowerDiv.append(flower_colors)
             
                         // Append the container to the flower options
                         flowerContainer.append(flowerDiv);
@@ -230,7 +233,7 @@
                     
                     // Append the flower container and a 'Visualize bouquet' button to the results div
                     $("#results").append(flowerContainer);
-                    $("#results").append("<input type='submit' value='Visualize bouquet' id='img_btn'>");
+                    //$("#results").append("<input type='submit' value='Visualize bouquet' id='img_btn'>");
                 }
                 
                 // Add an event listener for the 'Visualize bouquet' button
