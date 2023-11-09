@@ -37,6 +37,7 @@ form_data = {
     'extras': "",
     'flowers':[],
     'flower_images': [],
+    'flower_colors': [],
     'generations': []
 
 }
@@ -63,7 +64,7 @@ def generate_bouquet_req(data):
     for color in data['colors']:
         req = req + color + ', '
 
-    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format color1 flower1, color2 flower2, color3 flower3, etc. with no other text"
+    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format flower1, flower2, flower3, etc. with no other text"
     print(req)
     return req
 
@@ -127,6 +128,21 @@ def submit_form():
         flowers = list(response.split(','))[:4]
 
         form_data['flowers'] = flowers
+
+        color_scheme = ''
+        for color in form_data['colors']:
+            color_scheme = color_scheme + ", " + color
+
+        flower_list = ''
+        for flower in flowers:
+            flower_list = flower_list + ', ' + flower
+
+        req = "For each flower in this list" + flower_list + " please generate a list of three colors this flower comes in that matches the color scheme of " + color_scheme + " with no other text (only colors)"
+        print(req)
+        response = openai.Completion.create(engine="text-davinci-003", prompt=req, max_tokens=256)["choices"][0]["text"]
+        print(response)
+        flower_colors = list(response.split('/n'))
+        form_data['flower_colors'] = flower_colors
 
         # Generate images for the flowers
         flower_images = generate_flower_images(flowers)  # Implement this function
