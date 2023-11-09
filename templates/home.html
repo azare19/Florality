@@ -220,11 +220,15 @@
                         var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
                         var caption = $("<figcaption>" + flower + "</figcaption>");
                         var flower_colors = $("<text>" + data.flower_colors[0] + "</text>");
+                        var flower_info = $("<div class='flower-info'>" + data.flower_info[flower] + "</div>");
+                        console.log(data.flower_info[flower]);
+
                         // Append the image and checkbox to the container
                         flowerDiv.append(flowerImage);
                         flowerDiv.append(checkbox);
                         flowerDiv.append(caption);
                         flowerDiv.append(flower_colors)
+                        flowerDiv.append(flower_info);
             
                         // Append the container to the flower options
                         flowerContainer.append(flowerDiv);

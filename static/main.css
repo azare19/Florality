@@ -50,9 +50,6 @@ body {
     margin-right: 5px; /* Add some space between checkbox and text */
 }
 
-
-
-
 /* Center the "What Shape?" title */
 .shape-options {
     flex: 1;
@@ -159,6 +156,10 @@ input[type="checkbox"] {
     display: flex; /* Use flexbox to center content */
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
+}
+
+.flower-info {
+    font-size: 10px;
 }
 
 /* Flower Options Container */

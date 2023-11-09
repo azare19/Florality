@@ -7,29 +7,23 @@ app = Flask(__name__)
 #for gpt
 import os
 import openai
-import bardapi
 
 import secrets
 import secret_key
+
 openai.api_key = secret_key.SECRET_KEY
-
-
 
 #for dalle
 import json
 from base64 import b64decode
 from pathlib import Path
 
+# client = OpenAI(
+#     # defaults to os.environ.get("OPENAI_API_KEY")
+#     api_key=secret_key.SECRET_KEY,
+# )
 
-
-# '''#Thid is the basic data representation
-# headline_data = {
-#   "headline":"",
-#   "summary":"",
-#   "keywords":[],
-#   "generations":[]
-# }'''
-
+# data
 form_data = {
     'colors':[],
     'shape': "",
@@ -38,11 +32,11 @@ form_data = {
     'flowers':[],
     'flower_images': [],
     'flower_colors': [],
-    'generations': []
-
+    'generations': [],
+    'flower_info': {}
 }
 
-
+# INIT with example data
 sample_form_data_1 = {
     'colors': ['oranges','neutrals'],
     'shape': 'round',
@@ -51,11 +45,13 @@ sample_form_data_1 = {
     'flowers': ['Tiger Lilies', 'Cream Roses', 'Peach Dahlias', 'Apricot Ranunculus', 'Dusty Miller', 'Beige Peonies', 'Neutral Spray Roses'],
 }
 
+sample_flower_info_1 = {
+    'tiger lilies': "",
+    'roses': "",
+    'peonies': ""   
+}
 
-#### INIT with example data
-# headline_data = sample_headline_data_1
-
-
+# prompt construction
 def generate_bouquet_req(data):
     req = "give me a simple list of flowers to use in a "
 
@@ -65,6 +61,7 @@ def generate_bouquet_req(data):
         req = req + color + ', '
 
     req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format flower1, flower2, flower3, etc. with no other text"
+    
     print(req)
     return req
 
@@ -77,7 +74,6 @@ def generate_bouquet_desc(data):
     desc = desc + "in a " + data['shape'] + " shape with a " + data['vibe'] + " theme"
 
     print(desc)
-
     return desc
 
 def generate_flower_images(flowers):
@@ -102,7 +98,16 @@ def generate_flower_images(flowers):
 
     return flower_images
 
+def generate_flower_info():
+    global form_data
 
+    req_frag_1 = "write a paragraph about the "
+    req_frag_2 = "including plant type, size, typical flower colors, foliage color, use in a bouquet, what bouquet shape it typically fits, and meaning of the flower."
+
+    for flower in form_data['flowers']:
+        if not flower in form_data['flower_info'].keys():
+            response = openai.Completion.create(engine="text-davinci-003", prompt=req_frag_1 + flower + req_frag_2, max_tokens=256)["choices"][0]["text"]
+            form_data['flower_info'][flower] = response
 
 @app.route('/submit_form', methods=['GET', 'POST'])
 def submit_form():
@@ -153,6 +158,8 @@ def submit_form():
                          ' Statice': '/static/statice.jpeg'}'''
 
         form_data['flower_images'] = flower_images  # Add the flower images to the form_data
+
+        generate_flower_info() # Generate flower information
         
         return jsonify(form_data)
     
