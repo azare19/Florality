@@ -221,13 +221,21 @@
                         var caption = $("<figcaption>" + flower + "</figcaption>");
                         var flower_colors = $("<text>" + data.flower_colors[0] + "</text>");
                         var flower_info = $("<div class='flower-info'>" + data.flower_info[flower] + "</div>");
+                        // Create a select element for flower colors
+                        var flowerColorsSelect = $("<select name='flower_colors'></select>");
+
+                        // Iterate over each color for the current flower and create an option element
+                        data.flower_colors[flower].forEach(function (color) {
+                            var colorOption = $("<option value='" + color + "'>" + color + "</option>");
+                            flowerColorsSelect.append(colorOption);
+                        });
                         console.log(data.flower_info[flower]);
 
                         // Append the image and checkbox to the container
                         flowerDiv.append(flowerImage);
                         flowerDiv.append(checkbox);
                         flowerDiv.append(caption);
-                        flowerDiv.append(flower_colors)
+                        flowerDiv.append(flowerColorsSelect)
                         flowerDiv.append(flower_info);
             
                         // Append the container to the flower options
@@ -244,11 +252,21 @@
                 $("#img_btn").click(function () {
                     // Implement the logic to visualize the bouquet when the button is clicked
                     // You can call the function or make another AJAX request here
-                    let checkboxes = document.querySelectorAll('input[name="selected_flowers"]:checked');
-                    let selected_flowers = [];
-                    checkboxes.forEach((checkbox) => {
-                        selected_flowers.push(checkbox.value);
+                    let selectedFlowersWithColors = [];
+
+                    // Iterate over each selected flower
+                    $('input[name="selected_flowers"]:checked').each(function () {
+                        let flowerName = $(this).val();
+
+                        // Find the corresponding color for the selected flower
+                        let selectedColor = $(this).closest('.flower-option').find('select[name="flower_colors"]').val();
+
+                        // Append the flower name and selected color to the array
+                        selectedFlowersWithColors.push({ flower: flowerName, color: selectedColor });
                     });
+
+                    // Log or use the selected flowers with colors as needed
+                    console.log(selectedFlowersWithColors);
 
                     req_img(selected_flowers, form_data)
                 });
