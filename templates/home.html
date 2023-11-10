@@ -3,51 +3,77 @@
 {% block content %}
 
     <div>
-        <h3>Let's make something beautiful!</h3>
-        <h4>Florality: The Generative AI Bouquet Designer</h4>
+        <div id="home_title_container">
+            <h3>Florality: the Gen AI Bouquet Designer</h3>
+            <h4>let's make something beautiful</h4>    
+        </div>
+
+        <div id="bouq_form_progress">
+            <div class="md-stepper-horizontal pink">
+                <div id="colors_step" class="md-step active">
+                  <div class="md-step-circle"><span>1</span></div>
+                  <div class="md-step-title">Colors</div>
+                  <div class="md-step-bar-left"></div>
+                  <div class="md-step-bar-right"></div>
+                </div>
+                <div id="shape_step" class="md-step active">
+                  <div class="md-step-circle"><span>2</span></div>
+                  <div class="md-step-title">Shape</div>
+                  <div class="md-step-bar-left"></div>
+                  <div class="md-step-bar-right"></div>
+                </div>
+                <div id="vibe_step" class="md-step active">
+                  <div class="md-step-circle"><span>3</span></div>
+                  <div class="md-step-title">Vibe</div>
+                  <div class="md-step-bar-left"></div>
+                  <div class="md-step-bar-right"></div>
+                </div>
+              </div>
+        </div>
+
         <div id="bouq_form">
             <div style="display: flex;">
                 <!-- First Column -->
                 <div class="color-options" id="color-options" style="flex: 1; padding: 10px;">
                     <h4>Pick some colors!</h4>
                     <div class="color-group">
-                        <label>
-                            <input type="checkbox" name="color_options" value="reds">
+                        <label class="option">
+                            <input class="checkbox" type="checkbox" name="color_options" value="reds">
                             Reds
                         </label>
-                        <label>
-                            <input type="checkbox" name="color_options" value="oranges">
+                        <label class="option">
+                            <input class="checkbox" type="checkbox" name="color_options" value="oranges">
                             Oranges
                         </label>
-                        <label>
-                            <input type="checkbox" name="color_options" value="yellows">
+                        <label class="option">
+                            <input class="checkbox" type="checkbox" name="color_options" value="yellows">
                             Yellows
                         </label>
                     </div>
                     <div class="color-group">
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="greens">
                             Greens
                         </label>
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="blues">
                             Blues
                         </label>
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="purples">
                             Purples
                         </label>
                     </div>
                     <div class="color-group">
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="whites">
                             Whites
                         </label>
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="neutrals">
                             Neutrals
                         </label>
-                        <label>
+                        <label class="option">
                             <input type="checkbox" name="color_options" value="pinks">
                             Pinks
                         </label>
@@ -59,19 +85,19 @@
                     <h4>Choose a shape!</h4>
                     <div class = 'shape-options-content'>
                         <div style="flex: 1; padding: 10px;">
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="round"> 
                                 <img src="/static/round.png" alt="round bouquet" style="width:100px;height:100px">
                                 <figcaption>Round</figcaption>
                             </label>
                             <br>
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="pageant">
                                 <img src="/static/pageant.png" alt="pageant bouquet" style="width:100px;height:100px">
                                 <figcaption>Pageant</figcaption>
                             </label>
                             <br>
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="cascade">
                                 <img src="/static/cascade.png" alt="cascade bouquet" style="width:100px;height:100px">
                                 <figcaption>Cascade</figcaption>
@@ -79,19 +105,19 @@
                         </div>
         
                         <div style="flex: 1; padding: 10px;">
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="nosegay">
                                 <img src="/static/nosegay.png" alt="nosegay bouquet" style="width:100px;height:100px">
                                 <figcaption>Nosegay</figcaption>
                             </label>
                             <br>
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="pomander">
                                 <img src="/static/pomander.png" alt="pomander bouquet" style="width:100px;height:100px">
                                 <figcaption>Pomander</figcaption>
                             </label>
                             <br>
-                            <label>
+                            <label class="option">
                                 <input type="radio" name="shape" value="posy">
                                 <img src="/static/posy.png" alt="posy bouquet" style="width:100px;height:100px">
                                 <figcaption>Posy</figcaption>
@@ -103,27 +129,27 @@
                 <!-- Third Column -->
                 <div id = 'vibe-options' style="flex: 1; padding: 10px;">
                     <h4>What's your bouquet's vibe?</h4>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="traditional"> Traditional
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="bohemian"> Bohemian
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="vintage"> Vintage
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="garden"> Garden
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="rustic"> Rustic
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="vibe" value="beach"> Beach
                     </label>
                 </div>
@@ -162,10 +188,35 @@
 
                     let shape = document.querySelector('input[name="shape"]:checked').value;
                     let vibe = document.querySelector('input[name="vibe"]:checked').value;
-
                     let extras = document.getElementById('extras').value
 
                     submit_form(colors, shape, vibe, extras)
+                })
+
+                $('.option').click(function(){
+                    let checkboxes = document.querySelectorAll('input[name="color_options"]:checked');
+                    let shape = document.querySelectorAll('input[name="shape"]:checked');
+                    let vibe = document.querySelectorAll('input[name="vibe"]:checked');
+
+                    console.log("option clicked")
+
+                    if (checkboxes.length > 0) {
+                        $("#colors_step").addClass('done')
+                    } else {
+                        $("#colors_step").removeClass('done')
+                    }
+
+                    if (shape.length > 0) {
+                        $("#shape_step").addClass('done')
+                    } else {
+                        $("#shape_step").removeClass('done')
+                    }
+
+                    if (vibe.length > 0) {
+                        $("#vibe_step").addClass('done')
+                    } else {
+                        $("#vibe_step").removeClass('done')
+                    }
                 })
             });
 
@@ -214,21 +265,23 @@
                     // Loop through the flowers and create checkboxes
                     data.flowers.forEach(function (flower) {
                         var flowerDiv = $("<div class='flower-option'></div>");
-                        var checkbox = $("<input type='checkbox' name='selected_flowers' value='" + flower + "'> " + flower);
+                        var checkbox = $("<input class='checkbox' type='checkbox' name='selected_flowers' value='" + flower + "'> " + flower);
                         console.log(flower)
                         console.log(data.flower_images[flower])
                         var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
                         var caption = $("<figcaption>" + flower + "</figcaption>");
                         var flower_colors = $("<text>" + data.flower_colors[0] + "</text>");
                         var flower_info = $("<div class='flower-info'>" + data.flower_info[flower] + "</div>");
+                        var flower_info_icon = $("<div class='flower-option-info'></div>")
                         console.log(data.flower_info[flower]);
 
                         // Append the image and checkbox to the container
                         flowerDiv.append(flowerImage);
                         flowerDiv.append(checkbox);
                         flowerDiv.append(caption);
-                        flowerDiv.append(flower_colors)
+                        flowerDiv.append(flower_colors);
                         flowerDiv.append(flower_info);
+                        flowerDiv.append(flower_info_icon);
             
                         // Append the container to the flower options
                         flowerContainer.append(flowerDiv);
