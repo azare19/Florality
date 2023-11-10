@@ -28,6 +28,12 @@
                   <div class="md-step-bar-left"></div>
                   <div class="md-step-bar-right"></div>
                 </div>
+                <div id="season_step" class="md-step active">
+                    <div class="md-step-circle"><span>4</span></div>
+                    <div class="md-step-title">Season</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                  </div>
               </div>
         </div>
 
@@ -157,19 +163,19 @@
                 <!-- Fourth Column - Add this section for choosing a season -->
                 <div id='season-options' style="flex: 1; padding: 10px;">
                     <h4>Choose a season!</h4>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="season" value="spring"> Spring
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="season" value="summer"> Summer
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="season" value="autumn"> Autumn
                     </label>
                     <br>
-                    <label>
+                    <label class="option">
                         <input type="radio" name="season" value="winter"> Winter
                     </label>
                 </div>
@@ -220,6 +226,7 @@
                     let checkboxes = document.querySelectorAll('input[name="color_options"]:checked');
                     let shape = document.querySelectorAll('input[name="shape"]:checked');
                     let vibe = document.querySelectorAll('input[name="vibe"]:checked');
+                    let season = document.querySelectorAll('input[name="season"]:checked');
 
                     console.log("option clicked")
 
@@ -239,6 +246,12 @@
                         $("#vibe_step").addClass('done')
                     } else {
                         $("#vibe_step").removeClass('done')
+                    }
+
+                    if (season.length > 0) {
+                        $("#season_step").addClass('done')
+                    } else {
+                        $("#season_step").removeClass('done')
                     }
                 })
             });

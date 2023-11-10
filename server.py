@@ -61,8 +61,7 @@ def generate_bouquet_req(data):
     for color in data['colors']:
         req = req + color + ', '
 
-    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + /
-        " in the following format flower1, flower2, flower3, etc. with no other text. Ensure the flowers are in season in the " + data['season'] 
+    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format flower1, flower2, flower3, etc. with no other text. Ensure the flowers are in season in the " + data['season'] 
     
     print(req)
     return req
