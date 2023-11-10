@@ -127,6 +127,27 @@
                         <input type="radio" name="vibe" value="beach"> Beach
                     </label>
                 </div>
+
+                <!-- Fourth Column - Add this section for choosing a season -->
+                <div id='season-options' style="flex: 1; padding: 10px;">
+                    <h4>Choose a season!</h4>
+                    <label>
+                        <input type="radio" name="season" value="spring"> Spring
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="season" value="summer"> Summer
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="season" value="autumn"> Autumn
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="season" value="winter"> Winter
+                    </label>
+                </div>
+
             </div>
     
             <!-- Input Text Box -->
@@ -162,15 +183,16 @@
 
                     let shape = document.querySelector('input[name="shape"]:checked').value;
                     let vibe = document.querySelector('input[name="vibe"]:checked').value;
+                    let season = document.querySelector('input[name="season"]:checked').value;
 
                     let extras = document.getElementById('extras').value
 
-                    submit_form(colors, shape, vibe, extras)
+                    submit_form(colors, shape, vibe, season, extras)
                 })
             });
 
             function submit_form(colors, shape, vibe, extras){
-                let data = {"colors":colors,"shape":shape, 'vibe':vibe, "extras":extras}
+                let data = {"colors":colors,"shape":shape, "season":season, 'vibe':vibe, "extras":extras}
                 $.ajax({
                     type: "POST",
                     url: "/submit_form",                
@@ -219,8 +241,6 @@
                         console.log(data.flower_images[flower])
                         var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
                         var caption = $("<figcaption>" + flower + "</figcaption>");
-                        var flower_colors = $("<text>" + data.flower_colors[0] + "</text>");
-                        var flower_info = $("<div class='flower-info'>" + data.flower_info[flower] + "</div>");
                         // Create a select element for flower colors
                         var flowerColorsSelect = $("<select name='flower_colors'></select>");
 
@@ -229,14 +249,11 @@
                             var colorOption = $("<option value='" + color + "'>" + color + "</option>");
                             flowerColorsSelect.append(colorOption);
                         });
-                        console.log(data.flower_info[flower]);
-
                         // Append the image and checkbox to the container
                         flowerDiv.append(flowerImage);
                         flowerDiv.append(checkbox);
                         flowerDiv.append(caption);
                         flowerDiv.append(flowerColorsSelect)
-                        flowerDiv.append(flower_info);
             
                         // Append the container to the flower options
                         flowerContainer.append(flowerDiv);
