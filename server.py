@@ -32,7 +32,7 @@ form_data = {
     'extras': "",
     'flowers':[],
     'flower_images': [],
-    'flower_colors': [],
+    'flower_colors': {},
     'generations': [],
     'flower_info': {}
 }
@@ -44,12 +44,7 @@ sample_form_data_1 = {
     'vibe': 'vintage',
     'extras': 'tiger lillies',
     'flowers': ['Tiger Lilies', 'Cream Roses', 'Peach Dahlias', 'Apricot Ranunculus', 'Dusty Miller', 'Beige Peonies', 'Neutral Spray Roses'],
-}
-
-sample_flower_info_1 = {
-    'tiger lilies': "",
-    'roses': "",
-    'peonies': ""   
+    'flower_info': {}
 }
 
 # prompt construction
@@ -70,7 +65,7 @@ def generate_bouquet_desc(data):
     desc = "realistic bouqet with "
 
     for flower in data['flowers']:
-        desc = desc + flower + ", "
+        desc = desc + flower['color'] + flower['flower'] + ", "
 
     desc = desc + "in a " + data['shape'] + " shape with a " + data['vibe'] + " theme"
 
@@ -92,7 +87,7 @@ def generate_flower_colors(data):
 
     req = "Generate a list of 12 possible colors for the following flowers" + flower_list + " in the following format : " \
             + "flower1, color1, color2, color3, flower2, color4, color5, color6, flower3, color7, color8, color9, flower4, color10, color11, color12 " \
-            + "Try to follow a " + color_scheme + " color scheme. However, if that flower does not come in that color only suggest colors the flower exists in."
+            + "Try to follow a " + color_scheme + " color scheme. However, if that flower does not come in that color only suggest colors the flower exists in. Make sure you follow the format exactly."
     
     print(req)
     return req
@@ -152,14 +147,15 @@ def submit_form():
         print(response)
 
         flowers = list(response.split(','))
-        flowers = list(response.split(','))[:4]
+        flowers = list([flower.strip() for flower in response.split(',')])[:4]
 
         form_data['flowers'] = flowers
 
         req = generate_flower_colors(form_data)
         response = openai.Completion.create(engine="text-davinci-003", prompt=req, max_tokens=256)["choices"][0]["text"]
         print(response)
-        flower_colors = list(response.split(','))
+
+        flower_colors = list([token.strip() for token in response.split(',')])
         form_data['flower_colors'][flower_colors[0]] = flower_colors[1:4]
         form_data['flower_colors'][flower_colors[4]] = flower_colors[5:8]
         form_data['flower_colors'][flower_colors[8]] = flower_colors[9:12]

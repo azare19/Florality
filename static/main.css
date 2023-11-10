@@ -5,6 +5,7 @@
 :root {
     --hover: #FF4081;
     --selected: #ff91b5;
+    --section-bg: #FEF2F4;
 }
 
 body {
@@ -148,11 +149,14 @@ h1, h2, h3, h4 {
 }
 
 /* Sections Styles (Colors, Shape, Vibe) */
+.options-section {
+    background-color: var(--section-bg);
+    border-radius: 5px;
+    text-align: center;
+}
 
 /* Style for the Colors section */
 .color-options {
-    border-radius: 5px;
-    background-color: #FEF2F4; /* Less bright pink */
     padding: 10px;
     margin-right: 10px; /* Add margin to create space between pink boxes */
     text-align: left; /* Center-align text */
@@ -196,7 +200,7 @@ h1, h2, h3, h4 {
     flex: 1;
     padding: 10px;
     border-radius: 5px;
-    background-color: #FEF2F4; /* Less bright pink */
+    background-color: var(--section-bg); /* Less bright pink */
     margin-right: 10px; /* Add margin to create space between pink boxes */
     text-align: center; /* Center-align text */
 }
@@ -213,7 +217,7 @@ h1, h2, h3, h4 {
 
 /* Flower Options Styles */
 .flower-option {
-    background-color: #FEF2F4; /* Less bright pink */
+    background-color: var(--section-bg); /* Less bright pink */
     border: 1px solid white;
     padding: 5px;
     border-radius: 5px;
@@ -232,7 +236,7 @@ h1, h2, h3, h4 {
 
 #vibe-options {
     /* Existing styles */
-    background-color: #FEF2F4;
+    background-color: var(--section-bg);
     padding: 10px;
     border-radius: 5px;
     margin-right: 10px;

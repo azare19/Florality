@@ -40,7 +40,7 @@
         <div id="bouq_form">
             <div style="display: flex;">
                 <!-- First Column -->
-                <div class="color-options" id="color-options" style="flex: 1; padding: 10px;">
+                <div class="color-options options-section" id="color-options" style="flex: 1; padding: 10px;">
                     <h4>Pick some colors!</h4>
                     <div class="color-group">
                         <label class="option">
@@ -87,7 +87,7 @@
                 </div>
     
                 <!-- Second Column -->
-                <div id = 'shape-options' class = 'shape-options'>
+                <div id = 'shape-options' class = 'shape-options options-section'>
                     <h4>Choose a shape!</h4>
                     <div class = 'shape-options-content'>
                         <div style="flex: 1; padding: 10px;">
@@ -133,7 +133,7 @@
                 </div>
     
                 <!-- Third Column -->
-                <div id = 'vibe-options' style="flex: 1; padding: 10px;">
+                <div id = 'vibe-options' class="options-section" style="flex: 1; padding: 10px;">
                     <h4>What's your bouquet's vibe?</h4>
                     <label class="option">
                         <input type="radio" name="vibe" value="traditional"> Traditional
@@ -161,7 +161,7 @@
                 </div>
 
                 <!-- Fourth Column - Add this section for choosing a season -->
-                <div id='season-options' style="flex: 1; padding: 10px;">
+                <div id='season-options' class="options-section" style="flex: 1; padding: 10px;">
                     <h4>Choose a season!</h4>
                     <label class="option">
                         <input type="radio" name="season" value="spring"> Spring
@@ -299,30 +299,36 @@
                     var flowerContainer = $("<div class='flower-options'></div>");
                     console.log(data.flower_images)
                     // Loop through the flowers and create checkboxes
+                    console.log(data.flowers)
                     data.flowers.forEach(function (flower) {
-                        var flowerDiv = $("<div class='flower-option'></div>");
-                        var checkbox = $("<input class='checkbox' type='checkbox' name='selected_flowers' value='" + flower + "'> " + flower);
-                        console.log(flower)
-                        console.log(data.flower_images[flower])
-                        var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
-                        var caption = $("<figcaption>" + flower + "</figcaption>");
-                        // Create a select element for flower colors
-                        var flowerColorsSelect = $("<select name='flower_colors'></select>");
 
-                        // Iterate over each color for the current flower and create an option element
-                        data.flower_colors[flower].forEach(function (color) {
-                            var colorOption = $("<option value='" + color + "'>" + color + "</option>");
-                            flowerColorsSelect.append(colorOption);
-                        });
-                        // Append the image and checkbox to the container
-                        flowerDiv.append(flowerImage);
-                        flowerDiv.append(checkbox);
-                        flowerDiv.append(caption);
-                        flowerDiv.append(flowerColorsSelect)
-            
-                        // Append the container to the flower options
-                        flowerContainer.append(flowerDiv);
-                        
+                        if (data.flower_colors[flower] != undefined) {
+                            var flowerDiv = $("<div class='flower-option'></div>");
+                            var checkbox = $("<input class='checkbox' type='checkbox' name='selected_flowers' value='" + flower + "'> " + flower);
+                            console.log(flower)
+                            console.log(data.flower_images[flower])
+                            var flowerImage = $("<img src='" + data.flower_images[flower] + "' alt='" + flower + "'>");
+                            var caption = $("<figcaption>" + flower + "</figcaption>");
+                            var flowerInfo = $("<div class='flower-info'>" + data.flower_info[flower] + "</div>")
+                            // Create a select element for flower colors
+                            var flowerColorsSelect = $("<select name='flower_colors'></select>");
+
+                            // Iterate over each color for the current flower and create an option element
+                            data.flower_colors[flower].forEach(function (color) {
+                                var colorOption = $("<option value='" + color + "'>" + color + "</option>");
+                                flowerColorsSelect.append(colorOption);
+                            });
+                            // Append the image and checkbox to the container
+                            flowerDiv.append(flowerImage);
+                            flowerDiv.append(checkbox);
+                            flowerDiv.append(caption);
+                            flowerDiv.append(flowerColorsSelect);
+                            flowerDiv.append(flowerInfo);
+                
+                            // Append the container to the flower options
+                            flowerContainer.append(flowerDiv);
+                        }
+                            
                     });
                     
                     // Append the flower container and a 'Visualize bouquet' button to the results div
@@ -350,7 +356,7 @@
                     // Log or use the selected flowers with colors as needed
                     console.log(selectedFlowersWithColors);
 
-                    req_img(selected_flowers, form_data)
+                    req_img(selectedFlowersWithColors, form_data)
                 });
             }
 
