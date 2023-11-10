@@ -191,7 +191,7 @@
                 })
             });
 
-            function submit_form(colors, shape, vibe, extras){
+            function submit_form(colors, shape, vibe, season, extras){
                 let data = {"colors":colors,"shape":shape, "season":season, 'vibe':vibe, "extras":extras}
                 $.ajax({
                     type: "POST",
