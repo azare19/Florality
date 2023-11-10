@@ -76,6 +76,26 @@ def generate_bouquet_desc(data):
     print(desc)
     return desc
 
+def generate_flower_colors(data):
+
+    color_scheme = ''
+    for color in data['colors']:
+        color_scheme = color_scheme + ", " + color
+
+    flower_list = ''
+    i = 0
+    for flower in data['flowers']:
+        flower_list = flower_list + ', ' + flower
+        i+=1
+        if i == 4: break
+
+    req = "Generate a list of 12 possible colors for the following flowers" + flower_list + " in the following format : " \
+            + "flower1, color1, color2, color3, flower2, color4, color5, color6, flower3, color7, color8, color9, flower4, color10, color11, color12 " \
+            + "Try to follow a " + color_scheme + " color scheme. However, if that flower does not come in that color only suggest colors the flower exists in."
+    
+    print(req)
+    return req
+
 def generate_flower_images(flowers):
     flower_images = {}
     max_no = 5
@@ -134,20 +154,16 @@ def submit_form():
 
         form_data['flowers'] = flowers
 
-        color_scheme = ''
-        for color in form_data['colors']:
-            color_scheme = color_scheme + ", " + color
-
-        flower_list = ''
-        for flower in flowers:
-            flower_list = flower_list + ', ' + flower
-
-        req = "For each flower in this list" + flower_list + " please generate a list of three colors this flower comes in that matches the color scheme of " + color_scheme + " with no other text (only colors)"
-        print(req)
+        req = generate_flower_colors(form_data)
         response = openai.Completion.create(engine="text-davinci-003", prompt=req, max_tokens=256)["choices"][0]["text"]
         print(response)
-        flower_colors = list(response.split('/n'))
-        form_data['flower_colors'] = flower_colors
+        flower_colors = list(response.split(','))
+        form_data['flower_colors'][flower_colors[0]] = flower_colors[1:4]
+        form_data['flower_colors'][flower_colors[4]] = flower_colors[5:8]
+        form_data['flower_colors'][flower_colors[8]] = flower_colors[9:12]
+        form_data['flower_colors'][flower_colors[12]] = flower_colors[13:]
+
+        print(form_data['flower_colors'])
 
         # Generate images for the flowers
         flower_images = generate_flower_images(flowers)  # Implement this function
