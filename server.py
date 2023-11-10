@@ -28,6 +28,7 @@ form_data = {
     'colors':[],
     'shape': "",
     'vibe': "",
+    'season': "",
     'extras': "",
     'flowers':[],
     'flower_images': [],
@@ -60,7 +61,8 @@ def generate_bouquet_req(data):
     for color in data['colors']:
         req = req + color + ', '
 
-    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format flower1, flower2, flower3, etc. with no other text"
+    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + /
+        " in the following format flower1, flower2, flower3, etc. with no other text. Ensure the flowers are in season in the " + data['season'] 
     
     print(req)
     return req
@@ -139,6 +141,7 @@ def submit_form():
         form_data['colors'] = data['colors']
         form_data['shape'] = data['shape']
         form_data['vibe'] = data['vibe']
+        form_data['season'] = data['season']
         form_data['extras'] = data['extras']
 
         req = generate_bouquet_req(form_data)
