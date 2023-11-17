@@ -7,6 +7,7 @@ app = Flask(__name__)
 #for gpt
 import os
 import openai
+from openai import OpenAI
 
 import secrets
 import secret_key
@@ -18,10 +19,10 @@ import json
 from base64 import b64decode
 from pathlib import Path
 
-# client = OpenAI(
-#     # defaults to os.environ.get("OPENAI_API_KEY")
-#     api_key=secret_key.SECRET_KEY,
-# )
+client = OpenAI(
+    # defaults to os.environ.get("OPENAI_API_KEY")
+    api_key=secret_key.SECRET_KEY,
+)
 
 # data
 form_data = {
@@ -122,8 +123,15 @@ def generate_flower_info():
 
     for flower in form_data['flowers']:
         if not flower in form_data['flower_info'].keys():
-            response = openai.Completion.create(engine="text-davinci-003", prompt=req_frag_1 + flower + req_frag_2, max_tokens=256)["choices"][0]["text"]
-            form_data['flower_info'][flower] = response
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful floral assistant."},
+                    {"role": "user", "content": req_frag_1 + flower + req_frag_2},
+                    ]
+                )
+            
+            form_data['flower_info'][flower] = response['choices'][0]['message']['content']
 
 @app.route('/submit_form', methods=['GET', 'POST'])
 def submit_form():
@@ -140,8 +148,15 @@ def submit_form():
 
         req = generate_bouquet_req(form_data)
 
-        response = openai.Completion.create(engine="text-davinci-003", prompt=req, max_tokens=256)["choices"][0]["text"]
+        response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful floral assistant."},
+                    {"role": "user", "content": req},
+                    ]
+                )
 
+        response = response['choices'][0]['message']['content']
         #response = 'Sunflower, Marigold, Chrysanthemum, Button Pompom, Statice, Solidago'
 
         print(response)
@@ -152,7 +167,15 @@ def submit_form():
         form_data['flowers'] = flowers
 
         req = generate_flower_colors(form_data)
-        response = openai.Completion.create(engine="text-davinci-003", prompt=req, max_tokens=256)["choices"][0]["text"]
+        response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful floral assistant."},
+                    {"role": "user", "content": req},
+                    ]
+                )
+
+        response = response['choices'][0]['message']['content']
         print(response)
 
         flower_colors = list([token.strip() for token in response.split(',')])
@@ -208,17 +231,19 @@ def req_img():
         return jsonify(form_data)
 
 def generate_images(prompt):
-    response = openai.Image.create(
+    response = client.images.generate(
+        model="dall-e-3",
         prompt=prompt,
-        n=1,
         size="256x256",
-        response_format="b64_json",
+        quality="standard",
+        n=1,
+        response_format = 'b64_json'
     )
 
     #create json file for image
     DATA_DIR = Path.cwd() / "responses"
     DATA_DIR.mkdir(exist_ok=True)
-    JSON_FILE = DATA_DIR / f"{prompt[:5]}-{response['created']}.json"
+    JSON_FILE = DATA_DIR / f"{prompt[:5]}-{response.data[0].url}.json"
     with open(JSON_FILE, mode="w", encoding="utf-8") as file:
         json.dump(response, file)  
 
