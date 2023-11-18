@@ -1,11 +1,17 @@
-/* Style Imports */
+/* IMPORTS */
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro&family=Playfair+Display:wght@600&family=Poppins&display=swap');
 
-/* Global Styles */
+/* GLOBAL */
 :root {
+    --dark-pink: #FF748D;
+
     --hover: #FF4081;
     --selected: #ff91b5;
     --section-bg: #FEF2F4;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -13,298 +19,388 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+
 }
 
 h1, h2, h3, h4 {
     font-family: 'Crimson Pro', serif;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
 .selected {
     background-color: var(--selected);
 }
 
-/* Style for the Home title */
+.btn-custom {
+    display: inline-block;
+    padding: 20px 25px;
+    border-radius: 20px;
+    background-color: white;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 5px solid black;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+.btn-custom:hover {
+    cursor: pointer;
+    background-color: var(--dark-pink);
+    border-bottom: 5px solid black;
+}
+
+.option input {
+    position: absolute !important;
+    top: 0 !important;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    appearance: none;
+}
+
+.option input[type="checkbox"] + label {
+    height: 100%;
+    width: 100%;
+}
+
+.option input:checked + label {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 6px solid black;
+}
+
+.flower-option input[type="checkbox"] {
+    position: absolute !important;
+    top: 0 !important;
+
+    width: 75%;
+    height: 75%;
+    appearance: none;
+}
+
+.flower-option label {
+    border-radius: 10px;
+    border: 2px dotted black;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.flower-option input[type="checkbox"]:hover + label {
+    border: 2px solid black;
+}
+
+.flower-option input[type="checkbox"]:checked + label {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 6px solid black;
+}
+
+.option input:hover + label {
+    border: 2px solid black;
+}
+
+/* Tooltip text */
+.tooltip-custom .tooltiptext {
+    display: none;
+    opacity: 0;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 5;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+.tooltip-custom .tooltiptext-xs {
+    opacity: 0;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip-custom:hover .tooltiptext {
+    display: block;
+    opacity: 1;
+}
+
+.tooltip-custom:hover .tooltiptext-xs {
+    opacity: 1;
+}
+
+/* NAVBAR / LAYOUT */
+.navbar-custom {
+    display: block !important;
+    margin: 0px auto 20px !important;
+    width: 25%;
+    max-width: 200px;
+    position: fixed !important;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 0px !important;
+    text-align: center;
+    z-index: 2;
+    background-color: var(--dark-pink);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    border-radius: 0px 0px 20px 20px;
+    padding: 0 !important;
+
+    /* border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 5px solid black; */
+
+    /* transition-duration: 100ms;
+    transition-property: padding-top;
+    transition-timing-function: ease-in-out; */
+}
+
+.navbar-brand {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 16px 20px;
+}
+
+/* GLOBAL SECTIONS */
+.flow-step {
+    position: absolute;
+    display: inline-block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.options-title-container {
+    width: 300px;
+    text-align: left;
+    padding: 20px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.options-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+
+    align-items: center;
+
+    margin: 40px 20px;
+}
+
+.option {
+    position: relative;
+}
+
+.option label {
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px dotted black;
+}
+
+label:hover, input:hover, .option:hover {
+    cursor: pointer;
+}
+
+/* HOME TITLE */
 #home_title_container {
     text-align: center;
     margin: auto;
 }
 
-/* Style for the form steps indicator */
-#bouq_form_progress {
-    margin: 20px auto;
+.page-section {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
 }
 
-.md-stepper-horizontal {
-	display:table;
-    width: 70%;
+#home_logo {
+    min-width: 200px;
+    width: 75%;
+    max-width: 500px;
+}
+
+.center-div {
+    display: block;
+    width: 50%;
     margin: auto;
-	background-color:#FFFFFF;
-}
-.md-stepper-horizontal .md-step {
-	display:table-cell;
-	position:relative;
-	padding:20px;
-    width: 20%;
-}
-.md-stepper-horizontal .md-step:hover,
-.md-stepper-horizontal .md-step:active {
-	background-color:rgba(0,0,0,0.04);
-}
-.md-stepper-horizontal .md-step:active {
-	border-radius: 15% / 75%;
-}
-.md-stepper-horizontal .md-step:first-child:active {
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-.md-stepper-horizontal .md-step:last-child:active {
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-.md-stepper-horizontal .md-step:hover .md-step-circle {
-	background-color:#757575;
-}
-.md-stepper-horizontal .md-step:first-child .md-step-bar-left,
-.md-stepper-horizontal .md-step:last-child .md-step-bar-right {
-	display:none;
-}
-.md-stepper-horizontal .md-step .md-step-circle {
-	width:30px;
-	height:30px;
-	margin:0 auto;
-	background-color:#999999;
-	border-radius: 50%;
-	text-align: center;
-	line-height:30px;
-	font-size: 16px;
-	font-weight: 600;
-	color:#FFFFFF;
-}
-.md-stepper-horizontal.green .md-step.active .md-step-circle {
-	background-color:#00AE4D;
-}
-.md-stepper-horizontal.pink .md-step.active .md-step-circle {
-	background-color: var(--selected);
-}
-.md-stepper-horizontal .md-step.active .md-step-circle {
-	background-color: var(--hover);
-}
-.md-stepper-horizontal .md-step.done .md-step-circle:before {
-	content: "✓";
-}
-.md-stepper-horizontal .md-step.done .md-step-circle *,
-.md-stepper-horizontal .md-step.editable .md-step-circle * {
-	display:none;
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle {
-	-moz-transform: scaleX(-1);
-	-o-transform: scaleX(-1);
-	-webkit-transform: scaleX(-1);
-	transform: scaleX(-1);
-}
-.md-stepper-horizontal .md-step.editable .md-step-circle:before {
-	font-weight:100;
-	content: "✎";
-}
-.md-stepper-horizontal .md-step .md-step-title {
-	margin-top:16px;
-	font-size:16px;
-	font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-title,
-.md-stepper-horizontal .md-step .md-step-optional {
-	text-align: center;
-	color:rgba(0,0,0,.26);
-}
-.md-stepper-horizontal .md-step.active .md-step-title {
-	font-weight: 600;
-	color:rgba(0,0,0,.87);
-}
-.md-stepper-horizontal .md-step.active.done .md-step-title,
-.md-stepper-horizontal .md-step.active.editable .md-step-title {
-	font-weight:600;
-}
-.md-stepper-horizontal .md-step .md-step-optional {
-	font-size:12px;
-}
-.md-stepper-horizontal .md-step.active .md-step-optional {
-	color:rgba(0,0,0,.54);
-}
-.md-stepper-horizontal .md-step .md-step-bar-left,
-.md-stepper-horizontal .md-step .md-step-bar-right {
-	position:absolute;
-	top:36px;
-	height:1px;
-	border-top:1px solid #DDDDDD;
-}
-.md-stepper-horizontal .md-step .md-step-bar-right {
-	right:0;
-	left:50%;
-	margin-left:20px;
-}
-.md-stepper-horizontal .md-step .md-step-bar-left {
-	left:0;
-	right:50%;
-	margin-right:20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-/* Sections Styles (Colors, Shape, Vibe) */
-.options-section {
-    background-color: var(--section-bg);
-    border-radius: 5px;
+.center-div > h3 {
+    font-size: 50px;
+}
+
+/* COLORS SELECTION SECTION */
+.color-option {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+
     text-align: center;
 }
 
-/* Style for the Colors section */
-.color-options {
-    padding: 10px;
-    margin-right: 10px; /* Add margin to create space between pink boxes */
-    text-align: left; /* Center-align text */
+#reds_color_option {
+    background-color: #FF8E8E;
 }
 
-/* Style for the title */
-.color-options h4 {
-    margin-bottom: 10px; /* Add some spacing between title and checkboxes */
-    text-align: center;
+#oranges_color_option {
+    background-color: #FFC265;
 }
 
-/* Style for individual color groups */
-.color-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left; /* Center-align color groups horizontally */
-    gap: 10px; /* Add gap between color groups */
+#yellows_color_option {
+    background-color: #FFEF5E;
 }
 
-/* Style for individual color options */
-.color-group label {
-    background-color: #FEF2F4; /* Less bright pink */
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    flex: 0 0 calc(33.33% - 10px); /* Each color option takes one-third of the width with a gap */
+#greens_color_option {
+    background-color: #9DCB8D;
 }
 
-/* Add a hover effect for better interaction */
-.color-group label:hover {
-    background-color: var(--hover); /* Lighter pink on hover */
+#blues_color_option {
+    background-color: #6BDEF7;
 }
 
-/* Style for checkboxes */
-.color-group input[type="checkbox"] {
-    margin-right: 5px; /* Add some space between checkbox and text */
+#purples_color_option {
+    background-color: #B588FF;
 }
 
-/* Center the "What Shape?" title */
-.shape-options {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: var(--section-bg); /* Less bright pink */
-    margin-right: 10px; /* Add margin to create space between pink boxes */
-    text-align: center; /* Center-align text */
+#whites_color_option {
+    background-color: white;
 }
 
-/* Style the shape options content */
-.shape-options-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding-top: 20px; /* Add padding to separate title from options */
+#neutrals_color_option {
+    background-color: #FFE9DD;
 }
 
+#pinks_color_option {
+    background-color: #FFB7EB;
+}
+
+/* SHAPES SELECTION SECTION */
+.shape-img {
+    width: 100px;
+    height: 100px;
+}
+
+/* VIBE/SEASON SELECTION SECTION */
+.option input[name="vibe"] + label, .option input[name="season"] + label {
+    padding: 20px;
+}
+
+/* EXTRAS SELECTION SECTION */
+#extras {
+    width: 300px;
+    height: 30px;
+}
 
 /* Flower Options Styles */
 .flower-option {
-    background-color: var(--section-bg); /* Less bright pink */
-    border: 1px solid white;
-    padding: 5px;
-    border-radius: 5px;
+    position: relative;
     cursor: pointer;
     margin: 5px; /* Add margin to create space between pink boxes */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center-align content horizontally */
     text-align: center; /* Center-align text */
+
+    border-radius: 10px;
 }
 
 .flower-option img {
-    width: 100px; /* Adjust the width to your desired size */
+    width: 200px; /* Adjust the width to your desired size */
     height: auto; /* This ensures the image maintains its aspect ratio */
+    border-radius: 10px;
 }
 
-#vibe-options {
-    /* Existing styles */
-    background-color: var(--section-bg);
+.flower-name {
+    width: 100%;
     padding: 10px;
-    border-radius: 5px;
-    margin-right: 10px;
+}
+
+.colors-dropdown {
+    width: 100%;
     text-align: center;
-}
-
-/* Style for radio buttons and labels */
-#vibe-options label {
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-/* Add a hover effect for better interaction */
-#vibe-options label:hover {
-    background-color: #FF4081; /* Lighter pink on hover */
-}
-
-
-/* Radio Buttons Styles */
-input[type="radio"] {
-    transform: scale(1.3); /* Increase the size of radio buttons for better visibility */
-    margin-right: 5px;
-}
-
-/* Radio Buttons Styles */
-input[type="checkbox"] {
-    transform: scale(1.3); /* Increase the size of radio buttons for better visibility */
-    margin-right: 5px;
-}
-
-/* Submit Button Styles */
-#submit_btn {
-    background-color: #FEF2F4; /* Less bright pink */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto; /* Set left and right margin to auto for horizontal centering */
-}
-
-#img_btn {
-    background-color: white; /* Less bright pink */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto; /* Set left and right margin to auto for horizontal centering */
+    z-index: 5;
 }
 
 /* Results and Gallery Styles */
 #results, #gallery {
-    background-color: #FEF2F4; /* Less bright pink */
-    padding: 20px;
-    border-radius: 5px;
-    margin-top: 20px;
     display: flex; /* Use flexbox to center content */
+    flex-direction: row;
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
 }
 
-.flower-info {
-    font-size: 10px;
-    width: 75%;
+#gallery {
+    display: none;
+}
+
+#results {
+    display: none;
+}
+
+.tooltip-custom {
+    color: black !important;
+    position: relative;
+    display: inline-block;
+    overflow: visible;
 }
 
 /* Flower Options Container */
@@ -321,6 +417,16 @@ input[type="checkbox"] {
     height: auto; /* This ensures the image maintains its aspect ratio */
 }
 
+/* VISUALIZED FLOWER */
+.gen-img {
+    width: 75%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*
 Waiting Ajax stuff
 */
@@ -333,6 +439,27 @@ Waiting Ajax stuff
   top: 0;
   left: 0;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 116, 141, 0.75);
   z-index: 2;
+}
+
+#spinner-div img {
+    position: fixed;
+
+    animation-name: loading;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 1s;
+
+    width: 100px;
+    height: auto;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes loading {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
