@@ -38,6 +38,12 @@ form_data = {
     'flower_info': {}
 }
 
+saved = {}
+
+sample_saved = {
+    "id": {"url": "", "colors": [], "shape": "", "vibe": "", "season":"", "selected flowers":[]}
+}
+
 # INIT with example data
 sample_form_data_1 = {
     'colors': ['oranges','neutrals'],
@@ -253,6 +259,30 @@ def req_img():
         form_data["generations"] = [images['url']]
         
         return jsonify(form_data)
+    
+@app.route('/save_img', methods=['GET', 'POST'])
+def save_img():
+    data = request.get_json() 
+
+    print(data)
+    print(data["form_data"])
+    print(data["selected_flowers"])
+    print(data['genURL'])
+
+    if request.method == 'POST':
+        generation_key = data['genURL']
+        saved[generation_key] = {
+            'selected_flowers': data['selected_flowers'],
+            'url': data['genURL'],
+            'colors': data["form_data"]['colors'],
+            'shape': data["form_data"]['shape'],
+            'vibe': data["form_data"]['vibe'],
+            'season': data["form_data"]['season']
+        }
+
+    return jsonify({"status": "success"})
+
+        
 
 def generate_images(prompt):
     response = client.images.generate(
@@ -271,7 +301,7 @@ def generate_images(prompt):
 
     return image_data
 
-# APP ROUTES
+
 
 @app.route('/')
 def home():
@@ -280,6 +310,9 @@ def home():
 @app.route('/bouquet')
 def bouquet_designer():
     return render_template('bouquet.html', data=form_data)
+
+
+
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 4000)    

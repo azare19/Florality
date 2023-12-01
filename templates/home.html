@@ -237,21 +237,6 @@
             <div class="flow-step text-center"> 
                 <div id="rec_step">        
                     <div id="results">
-                        <!-- <div class="flower-option">
-                            <img src="static/generated_images/singl-1700185788/singl-1700185788-0.png" alt="Carnations">
-                            <select class="colors-dropdown" name="flower_colors">
-                                <option value="Scarlet">Scarlet</option><option value="Mauve">Mauve</option>
-                                <option value="Lilac">Lilac</option>
-                            </select>
-                            <div class="flower-name">Carnations
-                            </div>
-                            <input id="carnations_1" class="checkbox" type="checkbox" name="selected_flowers" value="Carnations">
-                            <label for="carnations_1" class="tooltip-custom">
-                                <span class="tooltiptext flower-info">
-                                    Carnations are a popular flower choice in bouquets for their variety of vibrant colors ranging from whites, pinks, yellows, purples, and reds, and for their small size which makes them a great filler flower. Symbolizing love and fascination, they make a timeless addition to a bouquet, and can be used to express feelings of deep adoration or gratitude.
-                                </span>
-                            </label>
-                        </div> -->
                         <input type='submit' value='visualize my bouquet' id='img_btn' class="btn-custom">
                     </div>
                     <div id="gallery">
@@ -456,6 +441,35 @@
                     },
                 }); 
             }
+
+            function save_img(selected_flowers, form_data, generationURL){
+                let data = {"selected_flowers":selected_flowers,"form_data":form_data, "genURL":generationURL}
+                $.ajax({
+                    type: "POST",
+                    url: "/save_img",                
+                    dataType : "json",
+                    contentType: "application/json; charset=utf-8",
+                    
+                    data : JSON.stringify(data),
+                    beforeSend: function () { 
+                        $("#spinner-div").show()
+                    },
+                    success: function(data, text){
+                        console.log("Success")
+                        //console.log("submit_headline response")
+                        //console.log(data)                
+                    },
+                    error: function(request, status, error){
+                        console.log("Error");
+                        console.log(request)
+                        console.log(status)
+                        console.log(error)
+                    },
+                    complete: function () { 
+                        $("#spinner-div").hide()
+                    },
+                }); 
+            }
     
     
             function show_generations(generations_list){ 
@@ -469,6 +483,58 @@
                     let new_gen_div = $("<div class='gen-img'>"+"<img src='"+item+"''></div>")
                     
                     $("#gallery").append(new_gen_div)
+                })
+
+                $('#gallery').append("<input type='submit' value='<3' id='save_btn' class='btn-custom'>")
+                $('#gallery').append("<input type='submit' value='x' id='x_btn' class='btn-custom'>")
+                
+                $('#x_btn').click( function() {
+                    event.stopPropagation();
+                    // Implement the logic to visualize the bouquet when the button is clicked
+                    // You can call the function or make another AJAX request here
+                    let selectedFlowersWithColors = [];
+    
+                    // Iterate over each selected flower
+                    $('input[name="selected_flowers"]:checked').each(function () {
+                        let flowerName = $(this).val();
+    
+                        // Find the corresponding color for the selected flower
+                        let selectedColor = $(this).closest('.flower-option').find('select[name="flower_colors"]').val();
+    
+                        // Append the flower name and selected color to the array
+                        selectedFlowersWithColors.push({ flower: flowerName, color: selectedColor });
+                    });
+    
+                    // Log or use the selected flowers with colors as needed
+                    console.log(selectedFlowersWithColors);
+    
+                    req_img(selectedFlowersWithColors, form_data)
+                })
+
+                $('#save_btn').click( function() {
+                    // Implement the logic to visualize the bouquet when the button is clicked
+                    // You can call the function or make another AJAX request here
+                    let selectedFlowersWithColors = [];
+
+                    let generationURL = $('.gen-img img').attr('src');
+                    console.log(generationURL)
+    
+                    // Iterate over each selected flower
+                    $('input[name="selected_flowers"]:checked').each(function () {
+                        let flowerName = $(this).val();
+    
+                        // Find the corresponding color for the selected flower
+                        let selectedColor = $(this).closest('.flower-option').find('select[name="flower_colors"]').val();
+    
+                        // Append the flower name and selected color to the array
+                        selectedFlowersWithColors.push({ flower: flowerName, color: selectedColor });
+                    });
+    
+                    // Log or use the selected flowers with colors as needed
+                    console.log(selectedFlowersWithColors);
+    
+                    save_img(selectedFlowersWithColors, form_data, generationURL)
+                    req_img(selectedFlowersWithColors, form_data)
                 })
             }
         </script>
