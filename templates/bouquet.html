@@ -1,0 +1,285 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- FLOW NAVIGATION BUTTONS -->
+    <div id="section_btn_top">
+        <div class="section-btn" id="return_options_btn">
+            options<br>
+            ⤴
+        </div>
+        <div class="section-btn" id="return_flower_shop_btn">
+            flower shop<br>
+            ⤴
+        </div>        
+    </div>
+
+    <div id="section_btn_bottom">
+        <div class="section-btn" id="submit_btn">
+            flower shop<br>
+            ⤵
+        </div>
+        <div class="section-btn" id="img_btn">
+            visualize my bouquet<br>
+            ⤵
+        </div>
+    </div>
+
+    <!-- OPTIONS SECTION -->
+    <div class="page-section" id="options_section">
+        <div class="flow-step" id="options_step">
+            <h2>options</h2>
+
+            <div id="bouq_form" class="section-custom">
+                <div>
+                    <!-- Color Options -->
+                    <div class="options-section" id="color-options">
+                        <div class="options-title-container">
+                            <div>
+                                <div></div>
+                            </div>
+                            <h4>colors</h4>
+                        </div>
+                        <div class="options-container">
+                            <div class="option color-option tooltip-custom" id="reds_color_option">
+                                <input id="reds" class="checkbox" type="checkbox" name="color_options" value="reds">
+                                <label class="color-label" for="reds">
+                                    <span class="tooltiptext-xs">reds</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="oranges_color_option">
+                                <input id="oranges" class="checkbox" type="checkbox" name="color_options" value="oranges">
+                                <label class="color-label" for="oranges">
+                                    <span class="tooltiptext-xs">oranges</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="yellows_color_option">
+                                <input id="yellows" class="checkbox" type="checkbox" name="color_options" value="yellows">
+                                <label class="color-label" for="yellows">
+                                    <span class="tooltiptext-xs">yellows</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="greens_color_option">
+                                <input id="greens" class="checkbox" type="checkbox" name="color_options" value="greens">
+                                <label class="color-label" for="greens">
+                                    <span class="tooltiptext-xs">greens</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="blues_color_option">
+                                <input id="blues" class="checkbox" type="checkbox" name="color_options" value="blues">
+                                <label class="color-label" for="blues">
+                                    <span class="tooltiptext-xs">blues</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="purples_color_option">
+                                <input id="purples" class="checkbox" type="checkbox" name="color_options" value="purples">
+                                <label class="color-label" for="purples">
+                                    <span class="tooltiptext-xs">purples</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="whites_color_option">
+                                <input id="whites" class="checkbox" type="checkbox" name="color_options" value="whites">
+                                <label class="color-label" for="whites">
+                                    <span class="tooltiptext-xs">whites</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="neutrals_color_option">
+                                <input id="neutrals" class="checkbox" type="checkbox" name="color_options" value="neutrals">
+                                <label class="color-label" for="neutrals">
+                                    <span class="tooltiptext-xs">neutrals</span>
+                                </label>
+                            </div>
+
+                            <div class="option color-option tooltip-custom" id="pinks_color_option">
+                                <input id="pinks" class="checkbox" type="checkbox" name="color_options" value="pinks">
+                                <label class="color-label" for="pinks">
+                                    <span class="tooltiptext-xs">pinks</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Shape Options -->
+                    <div id = 'shape-options' class = 'shape-options options-section'>
+                        <div class="options-title-container">
+                            <div>
+                                <div></div>
+                            </div>
+                            <h4>shape</h4>
+                        </div>
+                        <div class='options-container'>
+                            <div class="option tooltip-custom">
+                                <input id="round_shape" type="radio" name="shape" value="round"> 
+                                <label for="round_shape">
+                                    <img src="/static/round.png" alt="round bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">round</span>
+                                </label>
+                            </div>
+                            <div class="option tooltip-custom">
+                                <input id="pageant_shape" type="radio" name="shape" value="pageant">
+                                <label for="pageant_shape">
+                                    <img src="/static/pageant.png" alt="pageant bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">pageant</span>
+                                </label>
+                            </div>
+                            <div class="option tooltip-custom">
+                                <input id="cascade_shape" type="radio" name="shape" value="cascade">
+                                <label for="cascade_shape">
+                                    <img src="/static/cascade.png" alt="cascade bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">cascade</span>
+                                </label>
+                            </div>
+                            <div class="option tooltip-custom">
+                                <input id="nosegay_shape" type="radio" name="shape" value="nosegay">
+                                <label for="nosegay_shape">
+                                    <img src="/static/nosegay.png" alt="nosegay bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">nosegay</span>
+                                </label>
+                            </div>
+                            <div class="option tooltip-custom">
+                                <input id="pomander_shape" type="radio" name="shape" value="pomander">
+                                <label for="pomander_shape">
+                                    <img src="/static/pomander.png" alt="pomander bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">pomander</span>
+                                </label>
+                            </div>
+                            <div class="option tooltip-custom">
+                                <input id="posy_shape" type="radio" name="shape" value="posy">
+                                <label for="posy_shape">
+                                    <img src="/static/posy.png" alt="posy bouquet" class="shape-img">
+                                    <span class="tooltiptext-xs">posy</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Vibe Options -->
+                    <div id = 'vibe-options' class="options-section">
+                        <div class="options-title-container">
+                            <div>
+                                <div></div>
+                            </div>
+                            <h4>vibe</h4>
+                        </div>
+                        <div class="options-container">
+                            <div class="option">
+                                <input id="traditional" type="radio" name="vibe" value="traditional">
+                                <label for="traditional">traditional</label>
+                            </div>
+                            <div class="option">
+                                <input id="bohemian" type="radio" name="vibe" value="bohemian">
+                                <label for="bohemian">bohemian</label>
+                            </div>
+                            <div class="option">
+                                <input id="vintage" type="radio" name="vibe" value="vintage">
+                                <label for="vintage">vintage</label>
+                            </div>
+                            <div class="option">
+                                <input id="garden" type="radio" name="vibe" value="garden">
+                                <label for="garden">garden</label>
+                            </div>
+                            <div class="option">
+                                <input id="rustic" type="radio" name="vibe" value="rustic">
+                                <label for="rustic">rustic</label>
+                            </div>
+                            <div class="option">
+                                <input id="beach" type="radio" name="vibe" value="beach">
+                                <label for="beach">beach</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Season Options -->
+                    <div id='season-options' class="options-section">
+                        <div class="options-title-container">
+                            <div>
+                                <div></div>
+                            </div>
+                            <h4>season</h4>
+                        </div>
+                        <div class="options-container">
+                            <div class="option">
+                                <input id="spring" type="radio" name="season" value="spring">
+                                <label for="spring">spring</label>
+                            </div>
+                            <div class="option">
+                                <input id="summer" type="radio" name="season" value="summer">
+                                <label for="summer">summer</label>
+                            </div>
+                            <div class="option">
+                                <input id="autumn" type="radio" name="season" value="autumn">
+                                <label for="autumn">autumn</label>
+                            </div>
+                            <div class="option">
+                                <input id="winter" type="radio" name="season" value="winter">
+                                <label for="winter">winter</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        
+                <!-- Input Text Box -->
+                <div id="extra-options" class="extras options-section">
+                    <div class="options-title-container">
+                        <div>
+                            <div></div>
+                        </div>
+                        <h4>anything else your bouquet needs? ex. specific flowers, other themes</h4>
+                    </div>
+                    <input type="text" id="extras" name="extras">
+                </div>
+            </div>
+        </div>
+    </div>      
+
+    <!-- FLOWER SHOP SECTION -->
+    <div class="page-section" id="flower_shop_section">
+        <div class="flow-step text-center"> 
+            <h2>flower shop</h2>    
+            <div id="results">
+                <!-- <div class="flower-option">
+                    <img src="static/generated_images/singl-1700185788/singl-1700185788-0.png" alt="Carnations">
+                    <select class="colors-dropdown" name="flower_colors">
+                        <option value="Scarlet">Scarlet</option><option value="Mauve">Mauve</option>
+                        <option value="Lilac">Lilac</option>
+                    </select>
+                    <div class="flower-name">Carnations
+                    </div>
+                    <input id="carnations_1" class="checkbox" type="checkbox" name="selected_flowers" value="Carnations">
+                    <label for="carnations_1" class="tooltip-custom">
+                        <span class="tooltiptext flower-info">
+                            Carnations are a popular flower choice in bouquets for their variety of vibrant colors ranging from whites, pinks, yellows, purples, and reds, and for their small size which makes them a great filler flower. Symbolizing love and fascination, they make a timeless addition to a bouquet, and can be used to express feelings of deep adoration or gratitude.
+                        </span>
+                    </label>
+                </div> -->
+            </div>
+        </div>
+    </div>       
+
+
+    <!-- BOUQUET SECTION -->
+    <div class="page-section" id="bouquet_section">
+        <div class="flow-step text-center">
+            <h2>bouquet visualization</h2>
+
+            <div id="gallery">
+
+            </div>
+        </div>
+    </div>
+
+    <script> 
+        let form_data = {{data|tojson}}
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename = 'bouquet.js') }}"></script>
+
+{% endblock %}
+

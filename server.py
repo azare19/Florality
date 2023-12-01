@@ -281,9 +281,11 @@ def generate_images(prompt):
 
 @app.route('/')
 def home():
-    # you can pass in an existing article or a blank one.
-    return render_template('home.html', data=form_data)   
+    return render_template('home2.html', data=form_data)   
 
+@app.route('/bouquet')
+def bouquet_designer():
+    return render_template('bouquet.html', data=form_data)
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 4000)    

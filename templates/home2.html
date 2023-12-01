@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div id="home_title_container" class="page-section">
+        <div class="center-div">
+            <div>
+                <img id="home_logo" src="static/logo.png"> 
+                <h3>florality: the gen ai bouquet designer</h3>
+                <p>let's make something beautiful</p>
+            </div>
+            
+            <a class="btn-custom" id="get_started">get started</a>
+        </div> 
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+
+{% endblock %}
+
