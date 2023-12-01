@@ -154,7 +154,7 @@ a:hover {
 .tooltip-custom .tooltiptext {
     display: none;
     opacity: 0;
-    width: 200px;
+    width: 200%;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -426,14 +426,6 @@ label:hover, input:hover, .option:hover {
     align-items: center; /* Center content vertically */
 }
 
-#gallery {
-    display: none;
-}
-
-#results {
-    display: none;
-}
-
 .tooltip-custom {
     color: black !important;
     position: relative;
@@ -477,8 +469,8 @@ Waiting Ajax stuff
   top: 0;
   left: 0;
   text-align: center;
-  background-color: rgba(255, 116, 141, 0.75);
-  z-index: 2;
+  background-color: rgba(255, 116, 141, 0.9);
+  z-index: 5;
 }
 
 #spinner-div img {

@@ -1,6 +1,18 @@
 $(function() {
     toggle_visibility(1);
 
+    $("#return_options_btn").click(function() {
+        toggle_visibility(1);
+    })
+
+    $("#return_flower_shop_btn").click(function() {
+        toggle_visibility(2);
+    })
+
+    $("#restart_btn").click(function() {
+        window.location.href = "/bouquet"
+    })
+
     $("#submit_btn").click(function(){
         let checkboxes = document.querySelectorAll('input[name="color_options"]:checked');
         let colors = [];
@@ -215,7 +227,9 @@ function show_generations(generations_list){
 // 3 = bouquet visualization
 function toggle_visibility(num) {
     if (num == 1) {
-        $("options_section").show()
+        console.log("Showing options");
+
+        $("#options_section").show()
         $("#flower_shop_section").hide()
         $("#bouquet_section").hide()
 
@@ -224,8 +238,11 @@ function toggle_visibility(num) {
 
         $("#submit_btn").show()
         $("#img_btn").hide()
+        $("#restart_btn").hide()
     } else if (num == 2) {
-        $("options_section").hide()
+        console.log("Showing flowers");
+
+        $("#options_section").hide()
         $("#flower_shop_section").show()
         $("#bouquet_section").hide()
 
@@ -234,15 +251,19 @@ function toggle_visibility(num) {
 
         $("#submit_btn").hide()
         $("#img_btn").show()
+        $("#restart_btn").hide()
     } else if (num == 3) {
-        $("options_section").hide()
+        console.log("Showing bouquets");
+
+        $("#options_section").hide()
         $("#flower_shop_section").hide()
         $("#bouquet_section").show()
 
         $("#return_options_btn").hide()
-        $("#return_flower-shop_btn").show()
+        $("#return_flower_shop_btn").show()
 
         $("#submit_btn").hide()
         $("#img_btn").hide()
+        $("#restart_btn").show()
     }
 }
