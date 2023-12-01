@@ -48,16 +48,57 @@ sample_form_data_1 = {
     'flower_info': {}
 }
 
+def is_valid_flowers_dict(obj):
+    # Check if obj is a dictionary
+    if not isinstance(obj, dict):
+        return False
+
+    # Check if obj has exactly one key
+    if len(obj) != 1:
+        return False
+
+    # Check if the key is "flowers"
+    key = list(obj.keys())[0]
+    if key != "flowers":
+        return False
+
+    # Check if the value associated with "flowers" is a list of strings
+    value = obj[key]
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+        return False
+
+    return True
+
+def is_valid_flower_colors_dict(input_dict, flower_list):
+    # Check if input_dict is a dictionary
+    if not isinstance(input_dict, dict):
+        return False
+
+    # Check if input_dict has exactly four keys
+    if len(input_dict) != 4:
+        return False
+
+    # Check if keys in input_dict match the flower_list
+    if set(input_dict.keys()) != set(flower_list):
+        return False
+
+    # Check if values associated with keys are lists of three strings
+    for flower, colors in input_dict.items():
+        if not isinstance(colors, list) or len(colors) != 3 or not all(isinstance(color, str) for color in colors):
+            return False
+
+    return True
+
 # prompt construction
 def generate_bouquet_req(data):
-    req = "give me a simple list of flowers to use in a "
+    req = "give me a simple list of flower names to use in a "
 
     req = req + data['shape'] + " shaped bouquet with a color scheme of "
 
     for color in data['colors']:
         req = req + color + ', '
 
-    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + " in the following format flower1, flower2, flower3, etc. with no other text. Ensure the flowers are in season in the " + data['season'] 
+    req = req + " with a " + data['vibe']  + " theme and make sure to include " + data['extras'] + "Ensure the flowers are in season in the " + data['season'] + ". Only give names of flowers, nothing else."
     
     print(req)
     return req
@@ -66,7 +107,7 @@ def generate_bouquet_desc(data):
     desc = "realistic bouqet with "
 
     for flower in data['flowers']:
-        desc = desc + flower['color'] + flower['flower'] + ", "
+        desc = desc + flower['color'] + " " + flower['flower'] + ", "
 
     desc = desc + "in a " + data['shape'] + " shape with a " + data['vibe'] + " theme"
 
@@ -86,9 +127,7 @@ def generate_flower_colors(data):
         i+=1
         if i == 4: break
 
-    req = "Generate a list of 12 possible colors for the following flowers" + flower_list + " in the following format : " \
-            + "flower1, color1, color2, color3, flower2, color4, color5, color6, flower3, color7, color8, color9, flower4, color10, color11, color12 " \
-            + "Try to follow a " + color_scheme + " color scheme. However, if that flower does not come in that color only suggest colors the flower exists in. Make sure you follow the format exactly."
+    req = "Generate a list of 3 possible colors for each of the following flowers" + flower_list
     
     print(req)
     return req
@@ -100,15 +139,12 @@ def generate_flower_images(flowers):
     for flower in flowers:
         if (i > 3):
             break
-        images = generate_images(prompt = "single stem of  " + flower + "with white background") 
+        image = generate_images(prompt = "single  " + flower + "centered on a white background") 
 
          # Create a list to store image URLs
         image_urls = []
 
-        for image in images:
-            # Store the URL of each generated image
-
-            image_urls.append(image['url'])
+        image_urls.append(image['url'])
         
         i+=1
         flower_images[flower] = image_urls
@@ -121,7 +157,7 @@ def generate_flower_info():
     req_frag_1 = "write a paragraph about the "
     req_frag_2 = "including plant type, size, typical flower colors, foliage color, use in a bouquet, what bouquet shape it typically fits, and meaning of the flower."
 
-    for flower in form_data['flowers']:
+    for flower in form_data['flowers'][:4]:
         if not flower in form_data['flower_info'].keys():
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -131,7 +167,8 @@ def generate_flower_info():
                     ]
                 )
             
-            form_data['flower_info'][flower] = response['choices'][0]['message']['content']
+            print(response.choices[0].message.content)
+            form_data['flower_info'][flower] = response.choices[0].message.content
 
 @app.route('/submit_form', methods=['GET', 'POST'])
 def submit_form():
@@ -148,53 +185,48 @@ def submit_form():
 
         req = generate_bouquet_req(form_data)
 
-        response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a helpful floral assistant."},
-                    {"role": "user", "content": req},
-                    ]
-                )
+        valid = False
+        while valid is False:
+            response = client.chat.completions.create(
+            model="gpt-3.5-turbo-1106",
+            messages=[
+                {"role": "system", "content": "You are a helpful floral assistant designed to output JSON in the format {'flowers':[]}."},
+                {"role": "user", "content": req},
+            ],
+            response_format={"type": "json_object"}
+            )
+            response = response.choices[0].message.content
+            response = json.loads(response)
+            print(response)
+            valid = is_valid_flowers_dict(response)
 
-        response = response['choices'][0]['message']['content']
-        #response = 'Sunflower, Marigold, Chrysanthemum, Button Pompom, Statice, Solidago'
-
-        print(response)
-
-        flowers = list(response.split(','))
-        flowers = list([flower.strip() for flower in response.split(',')])[:4]
-
-        form_data['flowers'] = flowers
+        form_data['flowers'] = response['flowers']
 
         req = generate_flower_colors(form_data)
-        response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a helpful floral assistant."},
-                    {"role": "user", "content": req},
-                    ]
-                )
 
-        response = response['choices'][0]['message']['content']
-        print(response)
+        valid = False
+        while valid is False:
+            response = client.chat.completions.create(
+                    model="gpt-3.5-turbo-1106",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful floral assistant designed to output JSON in the format {'flowername':[], ...}"},
+                        {"role": "user", "content": req},
+                        ],
+                    response_format={ "type": "json_object" }
+                    )
 
-        flower_colors = list([token.strip() for token in response.split(',')])
-        form_data['flower_colors'][flower_colors[0]] = flower_colors[1:4]
-        form_data['flower_colors'][flower_colors[4]] = flower_colors[5:8]
-        form_data['flower_colors'][flower_colors[8]] = flower_colors[9:12]
-        form_data['flower_colors'][flower_colors[12]] = flower_colors[13:]
+            response = response.choices[0].message.content
+            response = json.loads(response)
+            print(response)
+            valid = is_valid_flower_colors_dict(response, form_data['flowers'][:4])
 
-        print(form_data['flower_colors'])
+        form_data['flower_colors'] = response
 
         # Generate images for the flowers
-        flower_images = generate_flower_images(flowers)  # Implement this function
-        '''flower_images = {'Sunflower':'/static/sunflower.jpg',
-                         ' Marigold': '/static/marigold.jpg', 
-                         ' Chrysanthemum': '/static/chrys.jpg', 
-                         ' Button Pompom': '/static/button.jpg', 
-                         ' Statice': '/static/statice.jpeg'}'''
+        flower_images = generate_flower_images(form_data['flowers'])  
 
         form_data['flower_images'] = flower_images  # Add the flower images to the form_data
+        print(form_data['flower_images'])
 
         generate_flower_info() # Generate flower information
         
@@ -217,65 +249,27 @@ def req_img():
         images = generate_images(desc)
 
          # Create a list to store image URLs
-        image_urls = []
 
-        for image in images:
-            # Store the URL of each generated image
-            image_urls.append(image['url'])
-
-        # Update form_data with the first image URL
-        form_data["generations"] = image_urls  # Get only the first image URL'''
-
-        #form_data["generations"] = ['static/generated_images/reali-1694574007/reali-1694574007-0.png']
+        form_data["generations"] = [images['url']]
         
         return jsonify(form_data)
 
 def generate_images(prompt):
     response = client.images.generate(
-        model="dall-e-3",
+        model="dall-e-2",
         prompt=prompt,
         size="256x256",
         quality="standard",
-        n=1,
-        response_format = 'b64_json'
+        n=1
     )
 
-    #create json file for image
-    DATA_DIR = Path.cwd() / "responses"
-    DATA_DIR.mkdir(exist_ok=True)
-    JSON_FILE = DATA_DIR / f"{prompt[:5]}-{response.data[0].url}.json"
-    with open(JSON_FILE, mode="w", encoding="utf-8") as file:
-        json.dump(response, file)  
+    # Extract relevant information from the Image object
+    image_data = {
+        "prompt": prompt,
+        "url": response.data[0].url
+    }
 
-
-    #convert json image data file to png
-    IMAGE_DIR = Path.cwd() / "static/generated_images" / JSON_FILE.stem
-
-    IMAGE_DIR.mkdir(parents=True, exist_ok=True)
-
-    with open(JSON_FILE, mode="r", encoding="utf-8") as file:
-        response = json.load(file)
-
-    for index, image_dict in enumerate(response["data"]):
-        image_data = b64decode(image_dict["b64_json"])
-        image_file = IMAGE_DIR / f"{JSON_FILE.stem}-{index}.png"
-        with open(image_file, mode="wb") as png:
-            png.write(image_data)    
-
-    full_path_to_image = image_file.as_posix()
-    url_for_flask = full_path_to_image[full_path_to_image.find('static'):]
-
-    print("url_for_flask")
-    print(url_for_flask)
-
-    images = [
-        {
-            "prompt": prompt,
-            "url": url_for_flask, #image_file.as_posix(),
-        }
-    ]
-    print(url_for_flask)
-    return images
+    return image_data
 
 
 
