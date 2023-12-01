@@ -160,8 +160,8 @@ def generate_flower_images(flowers):
 def generate_flower_info():
     global form_data
 
-    req_frag_1 = "write a paragraph about the "
-    req_frag_2 = "including plant type, size, typical flower colors, foliage color, use in a bouquet, what bouquet shape it typically fits, and meaning of the flower."
+    req_frag_1 = "write a two sentence blurb about the "
+    req_frag_2 = "including plant type, size, use in a bouquet, what bouquet shape it typically fits, and meaning of the flower."
 
     for flower in form_data['flowers'][:4]:
         if not flower in form_data['flower_info'].keys():
@@ -305,8 +305,13 @@ def generate_images(prompt):
 
 @app.route('/')
 def home():
-    # you can pass in an existing article or a blank one.
-    return render_template('home.html', data=form_data)   
+    return render_template('home2.html', data=form_data)   
+
+@app.route('/bouquet')
+def bouquet_designer():
+    return render_template('bouquet.html', data=form_data)
+
+
 
 
 if __name__ == '__main__':
