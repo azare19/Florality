@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <script>
+        let saved = {{data|tojson}}
+        let ids = Object.keys(saved)
+    </script>
+
+    <div class="page-section" id="saved_section">
+        <div class="flow-step text-center">
+            <h2>my bouquets</h2>
+
+            <div id="saved_bouquets">
+            </div>
+        </div> 
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename = 'saved.js') }}"></script>
+
+{% endblock %}

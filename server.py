@@ -41,10 +41,16 @@ form_data = {
 saved = {}
 
 sample_saved = {
-    "id": {"url": "", "colors": [], "shape": "", "vibe": "", "season":"", "selected flowers":[]}
+    "id": {
+        "url": "", 
+        "colors": [], 
+        "shape": "", 
+        "vibe": "", 
+        "season":"", 
+        "selected flowers":[]
+    }
 }
 
-# INIT with example data
 sample_form_data_1 = {
     'colors': ['oranges','neutrals'],
     'shape': 'round',
@@ -311,7 +317,9 @@ def home():
 def bouquet_designer():
     return render_template('bouquet.html', data=form_data)
 
-
+@app.route('/saved')
+def save():
+    return render_template('saved.html', data=saved)
 
 
 if __name__ == '__main__':
