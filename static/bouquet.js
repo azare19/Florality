@@ -25,8 +25,13 @@ $(function() {
         let season = document.querySelector('input[name="season"]:checked');
         let extras = document.getElementById('extras');
 
-        if (colors.length > 0 && shape && vibe && season)
+        if (colors.length > 0 && shape && vibe && season) {
+            $("#options_warning").addClass("hidden");
             submit_form(colors, shape.value, vibe.value, season.value, extras.value)
+        }
+        else {
+            $("#options_warning").removeClass("hidden");
+        }
     });
 
     $("#save_btn").click(function() {
@@ -85,7 +90,12 @@ $(function() {
         console.log("img_btn clicked");
         console.log(selectedFlowersWithColors);
 
-        req_img(selectedFlowersWithColors, form_data)
+        if (selectedFlowersWithColors.length > 0) {
+            $("#flowers_warning").addClass("hidden");
+            req_img(selectedFlowersWithColors, form_data)
+        } else {
+            $("#flowers_warning").removeClass("hidden");
+        }
     });
 
     $('.option').click(function(){

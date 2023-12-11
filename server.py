@@ -3,7 +3,6 @@ from flask import render_template
 from flask import Response, request, jsonify
 app = Flask(__name__)
 
-
 #for gpt
 import os
 import openai
@@ -146,16 +145,15 @@ def generate_flower_colors(data):
 
 def generate_flower_images(flowers):
     flower_images = {}
-    max_no = 5
+    
     i = 0
     for flower in flowers:
+        print(flower)
         if (i > 3):
             break
         image = generate_images(prompt = "single  " + flower + "centered on a white background") 
 
-         # Create a list to store image URLs
         image_urls = []
-
         image_urls.append(image['url'])
         
         i+=1
@@ -195,6 +193,7 @@ def submit_form():
         form_data['season'] = data['season']
         form_data['extras'] = data['extras']
 
+        print("Generating flower selections...")
         req = generate_bouquet_req(form_data)
 
         valid = False
@@ -214,6 +213,7 @@ def submit_form():
 
         form_data['flowers'] = response['flowers']
 
+        print("Generating flower colors...")
         req = generate_flower_colors(form_data)
 
         valid = False
@@ -235,11 +235,13 @@ def submit_form():
         form_data['flower_colors'] = response
 
         # Generate images for the flowers
+        print("Generating flower images...")
         flower_images = generate_flower_images(form_data['flowers'])  
 
         form_data['flower_images'] = flower_images  # Add the flower images to the form_data
-        print(form_data['flower_images'])
+        # print(form_data['flower_images'])
 
+        print("Generating flower info...")
         generate_flower_info() # Generate flower information
         
         return jsonify(form_data)
@@ -260,9 +262,14 @@ def req_img():
 
         images = generate_images(desc)
 
-         # Create a list to store image URLs
-
         form_data["generations"] = [images['url']]
+
+        # Update the image path to use the local path
+        # image_path = os.path.join(IMAGE_FOLDER, f"{images['path']}.png")
+        # form_data["generations"] = [image_path]
+
+        # Create a list to store image URLs
+        # form_data["generations"] = [images['url']]
         
         return jsonify(form_data)
     
@@ -288,26 +295,46 @@ def save_img():
 
     return jsonify({"status": "success"})
 
-        
-
 def generate_images(prompt):
     response = client.images.generate(
         model="dall-e-2",
         prompt=prompt,
         size="256x256",
         quality="standard",
-        n=1
+        n=1,
+        response_format="b64_json"
     )
 
-    # Extract relevant information from the Image object
+    #create json file for image
+    DATA_DIR = Path.cwd() / "responses"
+    DATA_DIR.mkdir(exist_ok=True)
+    JSON_FILE = DATA_DIR / f"{prompt[:5]}-{response.created}.json"
+    with open(JSON_FILE, mode="w", encoding="utf-8") as file:
+        json.dump(response, file, default=lambda x: x.__dict__)  
+
+    #convert json image data file to png
+    IMAGE_DIR = Path.cwd() / "static/generated_images" / JSON_FILE.stem
+
+    IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+
+    with open(JSON_FILE, mode="r", encoding="utf-8") as file:
+        json_data = json.load(file)
+
+    for index, image_dict in enumerate(json_data["data"]):
+        image_data = b64decode(image_dict["b64_json"])
+        image_file = IMAGE_DIR / f"{JSON_FILE.stem}-{index}.png"
+        with open(image_file, mode="wb") as png:
+            png.write(image_data)    
+
+    full_path_to_image = image_file.as_posix()
+    url_for_flask = full_path_to_image[full_path_to_image.find('static'):]
+
     image_data = {
         "prompt": prompt,
-        "url": response.data[0].url
+        "url": url_for_flask,
     }
 
     return image_data
-
-
 
 @app.route('/')
 def home():
